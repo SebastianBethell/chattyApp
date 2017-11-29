@@ -21,6 +21,7 @@ class App extends React.Component {
         }
       ]
     };
+    this.onNewMessage = this.onNewMessage.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +37,15 @@ class App extends React.Component {
     }, 3000);
   }
 
+  onNewMessage (value) {
+    console.log('onNewMessage: ',value);
+    let keyI = this.state.messages.length + 1;
+    const newMessage = {key: keyI, username: this.state.currentUser.name, content: value};
+    const messages = this.state.messages.concat(newMessage)
+    // on new message add content to messages array
+    this.setState({messages: messages})
+  }
+
   render() {
     console.log("Rendering <App/>");
     return (
@@ -44,7 +54,7 @@ class App extends React.Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <MessageList messages={this.state.messages} />
-        <ChatBar currentUser={this.state.currentUser.name} />
+        <ChatBar currentUser={this.state.currentUser.name} handleNewMessage={this.onNewMessage}/>
       </div>
     );
   }
