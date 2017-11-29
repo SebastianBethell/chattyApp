@@ -22,6 +22,7 @@ class App extends React.Component {
       ]
     };
     this.onNewMessage = this.onNewMessage.bind(this);
+    this.handleChangeUserName = this.handleChangeUserName.bind(this);
   }
 
   componentDidMount() {
@@ -38,12 +39,18 @@ class App extends React.Component {
   }
 
   onNewMessage (value) {
-    console.log('onNewMessage: ',value);
-    let keyI = this.state.messages.length + 1;
+    console.log(this);
+    const keyI = this.state.messages.length + 1; //set new key to be 1 more than current key
     const newMessage = {key: keyI, username: this.state.currentUser.name, content: value};
     const messages = this.state.messages.concat(newMessage)
     // on new message add content to messages array
     this.setState({messages: messages})
+  }
+
+  handleChangeUserName (value) {
+    const userName = {name: value};
+    //set new user name
+    this.setState({currentUser: userName})
   }
 
   render() {
@@ -54,7 +61,7 @@ class App extends React.Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <MessageList messages={this.state.messages} />
-        <ChatBar currentUser={this.state.currentUser.name} handleNewMessage={this.onNewMessage}/>
+        <ChatBar currentUser={this.state.currentUser.name} handleNewMessage={this.onNewMessage} newUserName={this.handleChangeUserName}/>
       </div>
     );
   }
