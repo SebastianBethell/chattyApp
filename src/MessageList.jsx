@@ -8,7 +8,6 @@ class MessageList extends React.Component {
     const messagesList = messages.map((message) =>
       <Message key={message.key} messageValue={message} />
     );
-    console.log(messagesList);
 
     return (
       <main className="messages">

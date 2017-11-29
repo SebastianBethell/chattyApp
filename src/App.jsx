@@ -9,18 +9,7 @@ class App extends React.Component {
     this.socket = null;
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          key: "1",
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          key: "2",
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
+      messages: [] //message coming from the server will be stored here as they arrive
     };
     this.onNewMessage = this.onNewMessage.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
@@ -28,19 +17,24 @@ class App extends React.Component {
 
   componentDidMount() {
     this.socket = new WebSocket("ws://localhost:3001");
-    const ws = this.socket;
-    ws.onopen = function (event) {
+    this.socket.onopen = function (event) {
       console.log("Connected to server");
     };
+    this.socket.addEventListener('message', (msg) => {
+      const msgReParse = JSON.parse(msg.data);
+      this.setState({messages: this.state.messages.concat(msgReParse)});
+    });
   }
 
   onNewMessage (value) {
-    console.log(this);
-    const keyI = this.state.messages.length + 1; //set new key to be 1 more than current key
-    const newMessage = {key: keyI, username: this.state.currentUser.name, content: value};
+    // const keyI = this.state.messages.length + 1; //set new key to be 1 more than current key
+    const newMessage = {username: this.state.currentUser.name, content: value};
     const messages = this.state.messages.concat(newMessage)
+    const msgString = JSON.stringify(newMessage);
+
+    this.socket.send(msgString);
     // on new message add content to messages array
-    this.setState({messages: messages})
+    //this.setState({messages: messages})
   }
 
   handleChangeUserName (value) {
