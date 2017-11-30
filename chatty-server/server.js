@@ -28,7 +28,7 @@ wss.on('connection', (ws) => {
     const msgParse = JSON.parse(message);
     msgParse.key = uuidv4();
 
-    console.log('User', msgParse.username, 'said', msgParse.content, 'key:', msgParse.id);
+    console.log('User', msgParse.username, 'said', msgParse.content, 'key:', msgParse.key);
 
     const msgString = JSON.stringify(msgParse)
 
