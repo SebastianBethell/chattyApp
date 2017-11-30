@@ -24,13 +24,29 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
   clients.push(ws);
 
+  const clientsData = {size: wss.clients.size, type: "incomingClientConnect", key: uuidv4()};
+
+  const clientsDataString = JSON.stringify(clientsData) //stringify the JSON object
+
+  clients.forEach((client) => { //send the message to eag client
+    if (client.readyState == ws.OPEN) {
+      client.send(clientsDataString);
+    }
+  });
+
+  console.log('testing testing 1 2 3: ',wss.clients.size);
+
   ws.on('message', function incoming(message) {
     const msgParse = JSON.parse(message); //take incoming msg string and parse it
     msgParse.key = uuidv4(); //add a unique key
 
-    console.log('User', msgParse.username, 'said', msgParse.content, 'key:', msgParse.key, 'type:', msgParse.type);
+    //console.log('User', msgParse.username, 'said', msgParse.content, 'key:', msgParse.key, 'type:', msgParse.type);
 
-    msgParse.type = "incomingMessage"//change the type to "incomingMessage"
+    if (msgParse.type === "postMessage") {
+      msgParse.type = "incomingMessage"//change the type to "incomingMessage"
+    } else if (msgParse.type === "postNotification") {
+      msgParse.type = "incomingNotification"//change the type to "incomingNotification"
+    }
 
     const msgString = JSON.stringify(msgParse) //stringify the JSON object
 
@@ -42,6 +58,17 @@ wss.on('connection', (ws) => {
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    const clientsDisconnect = {size: wss.clients.size, type: "incomingClientDisconnect", key: uuidv4()};
+
+    const clientsDisconnectString = JSON.stringify(clientsDisconnect) //stringify the JSON object
+
+    clients.forEach((client) => { //send the message to eag client
+      if (client.readyState == ws.OPEN) {
+        client.send(clientsDisconnectString);
+      }
+    });
+  });
 });
 
