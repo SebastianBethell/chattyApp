@@ -22,19 +22,18 @@ class App extends React.Component {
     };
     this.socket.addEventListener('message', (msg) => {
       const msgReParse = JSON.parse(msg.data);
+      console.log(msgReParse);
       this.setState({messages: this.state.messages.concat(msgReParse)});
     });
   }
 
   onNewMessage (value) {
-    // const keyI = this.state.messages.length + 1; //set new key to be 1 more than current key
-    const newMessage = {username: this.state.currentUser.name, content: value};
-    const messages = this.state.messages.concat(newMessage)
+    const newMessage = {username: this.state.currentUser.name, content: value, type: "postMessage"}; //the new message is this standard format
+    const messages = this.state.messages.concat(newMessage); //messages is the list of all current messages in the list and the new message
     const msgString = JSON.stringify(newMessage);
 
-    this.socket.send(msgString);
-    // on new message add content to messages array
-    //this.setState({messages: messages})
+    this.socket.send(msgString); //send the JSON string to server
+
   }
 
   handleChangeUserName (value) {

@@ -25,14 +25,16 @@ wss.on('connection', (ws) => {
   clients.push(ws);
 
   ws.on('message', function incoming(message) {
-    const msgParse = JSON.parse(message);
-    msgParse.key = uuidv4();
+    const msgParse = JSON.parse(message); //take incoming msg string and parse it
+    msgParse.key = uuidv4(); //add a unique key
 
-    console.log('User', msgParse.username, 'said', msgParse.content, 'key:', msgParse.key);
+    console.log('User', msgParse.username, 'said', msgParse.content, 'key:', msgParse.key, 'type:', msgParse.type);
 
-    const msgString = JSON.stringify(msgParse)
+    msgParse.type = "incomingMessage"//change the type to "incomingMessage"
 
-    clients.forEach((client) => {
+    const msgString = JSON.stringify(msgParse) //stringify the JSON object
+
+    clients.forEach((client) => { //send the message to eag client
       if (client.readyState == ws.OPEN) {
         client.send(msgString);
       }
