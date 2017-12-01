@@ -35,5 +35,5 @@ ChattyApp allows users to communicate with each other without having to register
 
 ## Stretch
 
-  Added 4 user colors (after the first four are assigned new users get black)
-  Added react-scroll which keeps the newest message on screen when it would go below the current window
+  - Added 4 user colors (after the first four are assigned new users get black)
+  - Added react-scroll which keeps the newest message on screen when it would go below the current window
