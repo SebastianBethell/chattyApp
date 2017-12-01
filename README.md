@@ -6,9 +6,9 @@ ChattyApp allows users to communicate with each other without having to register
 
 ## Screenshots
 
-!["One user logged on, changed their name, sent a message"](URL)
+!["One user logged on, changed their name, sent a message"](https://github.com/SebastianBethell/chattyApp/blob/master/docs/oneUser.png)
 
-!["A second user logged on, changed their name, sent a message"](URL)
+!["A second user logged on, changed their name, sent a message"](https://github.com/SebastianBethell/chattyApp/blob/master/docs/twoUsers.png)
 
 ### Dependencies
   "react": "15.4.2",
