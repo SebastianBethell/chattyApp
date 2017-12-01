@@ -27,20 +27,12 @@ class App extends React.Component {
     window.scrollBy(0, 10);
     this.socket.addEventListener('message', (evt) => {
       const msgReParse = JSON.parse(evt.data);
-      if (msgReParse.type === "incomingMessage") {
-        this.setState({messages: this.state.messages.concat(msgReParse)});
-      } else if (msgReParse.type === "incomingNotification") {
-        this.setState({messages: this.state.messages.concat(msgReParse)});
-      } else if (msgReParse.type === "incomingClientConnect") {
-        this.setState({messages: this.state.messages.concat(msgReParse)});
-        this.setState({currentNumberOfUsers: msgReParse.size});
-      } else if (msgReParse.type === "incomingClientDisconnect") {
+      if (msgReParse.type === "incomingClientConnect" || msgReParse.type === "incomingClientDisconnect") {
         this.setState({messages: this.state.messages.concat(msgReParse)});
         this.setState({currentNumberOfUsers: msgReParse.size});
       } else {
-        throw new Error("Unknown event type " + msgReParse.type);
+        this.setState({messages: this.state.messages.concat(msgReParse)});
       }
-
     });
   }
 
