@@ -27,7 +27,7 @@ class App extends React.Component {
     window.scrollBy(0, 10);
     this.socket.addEventListener('message', (evt) => {
       const msgReParse = JSON.parse(evt.data);
-      if (msgReParse.type === "incomingClientConnect" || msgReParse.type === "incomingClientDisconnect") {
+      if (msgReParse.type === "incomingClientConnect" || msgReParse.type === "incomingClientDisconnect") { //checks if connection msg and if so updates both state.messages and state.currentNumberofUsers
         this.setState({messages: this.state.messages.concat(msgReParse)});
         this.setState({currentNumberOfUsers: msgReParse.size});
       } else {
